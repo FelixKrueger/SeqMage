@@ -26,6 +26,7 @@ public class GenomicCoords {
 		sb.append(end);
 		
 		return(sb.toString());
+		
 	}
 	
 	// Constructor method for new coordinates
