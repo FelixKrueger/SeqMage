@@ -1,5 +1,6 @@
-package uk.ac.babraham.Species;
+package uk.ac.babraham.SeqMage.Genomes;
 
 public class Species {
 
+	
 }

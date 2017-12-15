@@ -1,4 +1,4 @@
-package uk.ac.babraham.Assembly;
+package uk.ac.babraham.SeqMage.Genomes;
 
 public class Assembly {
 

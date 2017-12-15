@@ -1,7 +1,8 @@
-package uk.ac.babraham.GenomicCoords;
+package uk.ac.babraham.SeqMage.DataModel;
 
 public class GenomicCoords {
 
+	
 	private String chr;     // chromosome
 	private int start;      // start position
 	private int end;        // end position

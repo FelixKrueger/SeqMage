@@ -1,4 +1,4 @@
-package uk.ac.babraham.GetSequence;
+package uk.ac.babraham.SeqMage.DataModel;
 
 public class GetSequence {
 

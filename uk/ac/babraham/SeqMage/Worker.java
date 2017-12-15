@@ -1,9 +1,9 @@
-package uk.ac.babraham.Worker;
+package uk.ac.babraham.SeqMage;
 
 import java.util.ArrayList;
 
-import uk.ac.babraham.Ensembl.Ensembl;
-import uk.ac.babraham.GenomicCoords.GenomicCoords;
+import uk.ac.babraham.SeqMage.Ensembl.*;
+import uk.ac.babraham.SeqMage.DataModel.*;
 
 public class Worker {
 
@@ -12,24 +12,47 @@ public class Worker {
 	private String assembly;
 	private String inputFile;
 
+	private	boolean listSpecies;	
+	private	boolean listAssemblies;	
+
 	// constructor 
 	public Worker (String inputFile, String species, String assembly) {
 		this.assembly = assembly;
 		this.species = species;
 		this.inputFile = inputFile;
+		this.listSpecies = false;
+		this.listAssemblies = false;
 	}
 
 	// this method will kick off the processing
 	public void runSeqmage() {
 
-		// F	irst we need to make sure that the specified species and genome assembly are valid 
-		Ensembl strainAssembly = new Ensembl("GRCm38", "Mus musculus");
-		strainAssembly.printInput();
+		// create Ensembl object that talks to the Ensembl API
+		Ensembl myEnsembl = new Ensembl();
+		myEnsembl.processEnsembl();
+		System.out.println(myEnsembl.getSpecies());
+		// Species
 		
+		
+		if (listSpecies) {
+			//	Ensembl listingSpecies = new Ensembl(true);
+			//	System.out.println("Need to exit the program at this point");
+		}
+		else if(listAssemblies){
+
+		}
+		else {
+			// Before we start doing First we need to make sure that the specified species and genome assembly are valid 
+			//				Ensembl initialStrainAssembly = new Ensembl("Mus musculus", "GRCm38");
+			//		System.out.println("Using species: "+ initialStrainAssembly.getSpecies());
+		}
+
+
+		//String = initialStrainAssembly.printInput();
+		//public void printInput(){	
+		//System.out.println(species + " _ " + assembly);
+		//	}	
 		// Create a first set of genomic coords
-		
-		// Do I really want to store all Genomic Coords
-		// or can interrogate and write them line by line?	
 		//		ArrayList<GenomicCoords> allCoords = new ArrayList<>();
 		//
 		//		allCoords.add(new GenomicCoords("MT",12334,14442));

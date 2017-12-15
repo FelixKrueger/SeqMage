@@ -1,10 +1,7 @@
-package uk.ac.babraham.Launcher;
+package uk.ac.babraham.SeqMage;
 
 import java.util.ArrayList;
 
-import uk.ac.babraham.Ensembl.Ensembl;
-import uk.ac.babraham.GenomicCoords.GenomicCoords;
-import uk.ac.babraham.Worker.Worker;
 
 public class Launcher {
 	
