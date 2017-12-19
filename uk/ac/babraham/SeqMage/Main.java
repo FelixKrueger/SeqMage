@@ -3,7 +3,7 @@ package uk.ac.babraham.SeqMage;
 import java.util.ArrayList;
 
 
-public class Launcher {
+public class Main {
 	
 	public static void main(String[] args) {
 		
@@ -14,8 +14,8 @@ public class Launcher {
 		 * Assembly etc.
 		 * 
 		 */
-		Worker initialWorker = new Worker("Test SeqMonk List", "Mus musculus", "GRCm38");
-	
+		
+		runSeqMage initialWorker = new runSeqMage("Mus musculus", "GRCm38", "Test SeqMonk List");
 		initialWorker.runSeqmage();
 		
 	}		
