@@ -8,16 +8,17 @@ public class Species {
 	// private String [] possibleAssemblies = {"GRCm38","NCBIM37","NCBIM36"}; // should be array of Assembly objects
 	private Assembly [] possibleAssemblies;
 		
-	//	constructor
 	public Species(String species) {
 		this.species = species;
-		System.out.println("Species instantiated, got the following species: "+ this.species);
+		System.out.println("Species instantiated for species: "+ this.species);
 	}
 
 	// For a given Species we can list all available assemblies
 	public Assembly [] listAssemblies() {
 
 		// TODO: Need to work out how we can fill possibleAssemblies from Ensembl itself
+		
+		// For now using some mock Assembly names
 		ArrayList<Assembly> availableAssemblies = new ArrayList<>();		
 
 		availableAssemblies.add(new Assembly(new Species(species), "GRCm38"));
