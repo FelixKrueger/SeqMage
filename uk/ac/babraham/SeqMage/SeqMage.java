@@ -20,7 +20,7 @@ public class SeqMage {
 	private Species mySpecies;
 	private Assembly myAssembly;
 		
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		System.out.println("Starting to process command line arguments");
 		/*
@@ -50,7 +50,7 @@ public class SeqMage {
 	}
 
 	// this method will kick off the processing
-	public void runSeqmage() {
+	public void runSeqmage() throws Exception {
 
 		// instantiating Ensembl object that talks to the Ensembl API
 		Ensembl myEnsembl = new Ensembl();
@@ -107,6 +107,14 @@ public class SeqMage {
 			// Before we start doing First we need to make sure that the specified species and genome assembly are valid 
 			//	Ensembl initialStrainAssembly = new Ensembl("Mus musculus", "GRCm38");
 			//	System.out.println("Using species: "+ initialStrainAssembly.getSpecies());
+			
+			// make new EnsemblRest Object
+			System.out.println("\nNow making a Rest Object");
+			EnsemblRest rest = new EnsemblRest();
+			rest.doSomething();
+			
+			//EnsemblRest restQuery = new EnsemblRest(); 
+			//restQuery.doSomething() throws exception;
 		}
 	
 
