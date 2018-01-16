@@ -14,7 +14,7 @@ import java.io.DataOutputStream;
 
 public class EnsemblRest{
 
-	public void doSomething () throws Exception {
+	public String doSomething () throws Exception {
 	
 		// TODO: Figure out what to pass as the genome information for Sring ext
 		String server = "http://rest.ensembl.org";
@@ -26,7 +26,8 @@ public class EnsemblRest{
 		HttpURLConnection httpConnection = (HttpURLConnection)connection;
 
 		// TODO: find a way to create the postBody dynamically
-		String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }";
+		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }";
+		String postBody = "{ \"regions\" : [ \"MT:1..10:1\"] }";
 		httpConnection.setRequestMethod("POST");
 		httpConnection.setRequestProperty("Content-Type", "application/json");
 		httpConnection.setRequestProperty("Accept", "application/json");
@@ -73,8 +74,9 @@ public class EnsemblRest{
 		// Find a way to process JSON output: Make immutable JSON objects that can be queried individually
 		// There should be resources available to do this kind of stuff
 		System.out.println(output);
-		String test = processJson();
-		System.out.println(test);
+		return output;
+		// String test = processJson();
+		// System.out.println(test);
 		
 	}
 

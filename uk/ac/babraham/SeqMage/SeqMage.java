@@ -6,6 +6,17 @@ import uk.ac.babraham.SeqMage.Ensembl.*;
 import uk.ac.babraham.SeqMage.Genomes.Assembly;
 import uk.ac.babraham.SeqMage.Genomes.Species;
 import uk.ac.babraham.SeqMage.DataModel.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+// import java.lang.reflect.Type;
+import com.google.gson.reflect.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 public class SeqMage {
 
@@ -111,10 +122,52 @@ public class SeqMage {
 			// make new EnsemblRest Object
 			System.out.println("\nNow making a Rest Object");
 			EnsemblRest rest = new EnsemblRest();
-			rest.doSomething();
+			String out = rest.doSomething();
+			System.out.println("here is the Output, again\n" + out);
 			
-			//EnsemblRest restQuery = new EnsemblRest(); 
-			//restQuery.doSomething() throws exception;
+			System.out.println("Now converting JSON string to an object");
+			
+			// JSON to Java object conversion
+			
+			// This is an example of converting a single JSON object (testJson) to a Java EnsemblSequence Class
+			String testJson = "{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'}";
+
+			Gson gson = new Gson();
+			EnsemblSequence s = gson.fromJson(testJson, EnsemblSequence.class);
+			System.out.println(s);
+			
+			
+			System.out.println("Values individually:");
+			System.out.println(s.getId());
+			System.out.println(s.getQuery());
+			System.out.println(s.getSeq());
+			System.out.println(s.getMolecule());
+			// Right, this is working.
+			
+			// Now on deserialise Arrays
+			// deserialiseEnsemblSequenceNested();
+
+			String testJson2 = "[{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'},{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'},{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'}]";
+			// private static void 
+			Gson gson2 = new Gson();
+			// As array
+			EnsemblSequence[] ensemblSequences = gson2.fromJson(testJson2,EnsemblSequence[].class);
+			System.out.println(ensemblSequences.length);
+
+			// As ArrayList
+			// first we need to detect which type of data we are dealing with, with TypeToken (a Gson method)
+			// Type sequenceListType = new TypeToke<ArrayList<testJson2>>(){}.getType();		
+			
+			//List<EnsemblSequence> ensemblSequences = gson2.fromJson(testJson2, foundListType);
+			//System.out.println(ensemblSequences.length);
+			
+			//	gson.fromJson(rest);	
+			// String to JSON conversion:
+			/// String str = g.toJson(p);
+
+			// gson.getClass(out);
+			// String [] anotherStr = gson.fromJson(out, String[].class);
+			//System.out.println("Here is the conversion\n" + anotherStr);
 		}
 	
 
