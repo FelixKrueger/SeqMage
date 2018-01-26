@@ -1,22 +1,29 @@
 package uk.ac.babraham.SeqMage;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import uk.ac.babraham.SeqMage.Ensembl.*;
 import uk.ac.babraham.SeqMage.Genomes.Assembly;
 import uk.ac.babraham.SeqMage.Genomes.Species;
+import uk.ac.babraham.SeqMage.ParserWriter.InputFileReader;
 import uk.ac.babraham.SeqMage.DataModel.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-// import java.lang.reflect.Type;
+// import java.lang.reflect.ype;
 import com.google.gson.reflect.*;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 public class SeqMage {
 
@@ -30,7 +37,8 @@ public class SeqMage {
 
 	private Species mySpecies;
 	private Assembly myAssembly;
-		
+	private static final String fileName = "D:\\Eclipse\\SeqMage\\MT_test_report.txt";
+	
 	public static void main(String[] args) throws Exception {
 		
 		System.out.println("Starting to process command line arguments");
@@ -43,6 +51,9 @@ public class SeqMage {
 		 */
 		System.out.println("Finished processing command line arguments");
 
+		// read the Input file and return a list of chromosomal coordinates which we are interested in
+		InputFileReader inputReader = new InputFileReader(fileName);
+		inputReader.readFile();
 		// Once we have all necessary input we can start by calling a SeqMage object
 		SeqMage seqMage = new SeqMage("Mus musculus", "GRCm38", "Test SeqMonk List");
 		seqMage.runSeqmage();
@@ -74,7 +85,6 @@ public class SeqMage {
 			// variables inside methods can never be public or private because they are not class variables. 
 			// Either no access modifiers or final are the way to go
 			Species [] possibleSpecies = myEnsembl.listSpecies();
-
 			System.out.println("\nHere is a list of all possible Species: " + species);
 			
 			for (int i=0; i < possibleSpecies.length; i++) {
@@ -112,7 +122,6 @@ public class SeqMage {
 			
 			// Instantiating Assembly
 			this.myAssembly = new Assembly(mySpecies, assembly);
-			
 			System.out.println(myAssembly.getSequence("MT", 27, 67, -1));
 			
 			// Before we start doing First we need to make sure that the specified species and genome assembly are valid 
@@ -125,49 +134,55 @@ public class SeqMage {
 			String out = rest.doSomething();
 			System.out.println("here is the Output, again\n" + out);
 			
-			System.out.println("Now converting JSON string to an object");
+			System.out.println("Now converting JSON string to an object\n\n");
 			
 			// JSON to Java object conversion
+			// Generally, in JSON: {} is an object
+			//                     [] is an array
+			// what we get back from Ensembl REST querys are arrays of objects: [{},{},{}..]
+			
 			
 			// This is an example of converting a single JSON object (testJson) to a Java EnsemblSequence Class
-			String testJson = "{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'}";
+			// Not needed for the Ensembl query but I will leave it in here for future reference
+			// String testJson = "{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'}";
+			// Gson gson = new Gson();
+			// EnsemblSequence s = gson.fromJson(testJson, EnsemblSequence.class);
+			// System.out.println("Printing from a single JSON object");
+			// System.out.println(s);
 
-			Gson gson = new Gson();
-			EnsemblSequence s = gson.fromJson(testJson, EnsemblSequence.class);
-			System.out.println(s);
-			
-			
-			System.out.println("Values individually:");
-			System.out.println(s.getId());
-			System.out.println(s.getQuery());
-			System.out.println(s.getSeq());
-			System.out.println(s.getMolecule());
-			// Right, this is working.
-			
-			// Now on deserialise Arrays
-			// deserialiseEnsemblSequenceNested();
+			// System.out.println("Values individually:");
+			// System.out.println(s.getId());
+			// System.out.println(s.getQuery());
+			// System.out.println(s.getSeq());
+			// System.out.println(s.getMolecule() + "\n");
 
-			String testJson2 = "[{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'},{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'},{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'}]";
+		
+			String testJson2 = "[{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:1:10:1','seq':'GATCACAGGT','molecule':'dna'},"
+					+ "{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'},"
+					+ "{'query':'MT:1..10:1','id':'chromosome:GRCh38:MT:10:20:1','seq':'TTTAAAGGT','molecule':'dna'}]";
 			// private static void 
 			Gson gson2 = new Gson();
+			
 			// As array
 			EnsemblSequence[] ensemblSequences = gson2.fromJson(testJson2,EnsemblSequence[].class);
+			System.out.println("Printing from an array of JSON objects");
 			System.out.println(ensemblSequences.length);
-
-			// As ArrayList
-			// first we need to detect which type of data we are dealing with, with TypeToken (a Gson method)
-			// Type sequenceListType = new TypeToke<ArrayList<testJson2>>(){}.getType();		
+			// sequence of third item in the list (index pos)
+			System.out.println(ensemblSequences[2].getSeq() + "\n");
 			
-			//List<EnsemblSequence> ensemblSequences = gson2.fromJson(testJson2, foundListType);
-			//System.out.println(ensemblSequences.length);
+			// As an ArrayList. Both should work equally well, I'll leave it here for future reference
 			
-			//	gson.fromJson(rest);	
-			// String to JSON conversion:
-			/// String str = g.toJson(p);
-
-			// gson.getClass(out);
-			// String [] anotherStr = gson.fromJson(out, String[].class);
-			//System.out.println("Here is the conversion\n" + anotherStr);
+			// first we need to detect which type of data we going to deal with (an ArrayList of
+			// EnsemblSequences objects) with TypeToken (a Gson method)
+			// evaluate the type of list we are going to put the JSON objects in
+			// Type sequenceListType = new TypeToken<ArrayList<EnsemblSequence>>(){}.getType();
+			// translates to: give me the type of an array list of EnsemblSequence objects, and pass the type to gson
+			// NOTE: you only have to identify the type if the List is the root element of the JSON string, but not if it is nested.
+			
+			// ArrayList<EnsemblSequence> ensemblSequencesAsList = gson2.fromJson(testJson2, sequenceListType);
+			// System.out.println("Printing from an ArrayList of JSON objects");
+			// System.out.println(ensemblSequencesAsList.size());
+			// System.out.println(ensemblSequencesAsList.get(2).getSeq());
 		}
 	
 
