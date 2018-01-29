@@ -39,6 +39,8 @@ public class SeqMage {
 	private Assembly myAssembly;
 	private static final String fileName = "D:\\Eclipse\\SeqMage\\MT_test_report.txt";
 	
+	private static GenomicCoords[] queries;
+			
 	public static void main(String[] args) throws Exception {
 		
 		System.out.println("Starting to process command line arguments");
@@ -49,17 +51,42 @@ public class SeqMage {
 		 * Assembly etc.
 		 * 
 		 */
-		System.out.println("Finished processing command line arguments");
+		System.out.println("Finished processing command line arguments\n");
 
 		// read the Input file and return a list of chromosomal coordinates which we are interested in
+		System.out.println("Reading in a SeqMonk report now:");
 		InputFileReader inputReader = new InputFileReader(fileName);
-		inputReader.readFile();
+		
+		// queries is an array of GenomicCoords
+		queries = inputReader.readFile();
+		
+		// printArray(queries);
+		StringBuffer sb = new StringBuffer();
+		for (GenomicCoords gc: queries) {
+			sb.append(gc.toString() + ",");
+			//System.out.print(gc.toString() + ",");
+		}
+		System.out.println("Final Concatenated String:");
+		System.out.println(sb.toString());
+		//	for string in queries:
+		// System.out.println(queries);
+		System.out.println("Finished reading in SeqMonk report\n");
+		
 		// Once we have all necessary input we can start by calling a SeqMage object
 		SeqMage seqMage = new SeqMage("Mus musculus", "GRCm38", "Test SeqMonk List");
 		seqMage.runSeqmage();
 		
 	}		
 	
+	private static void printArray(String[] anArray) {
+		for (int i = 0; i < anArray.length; i++) {
+			if (i > 0) {
+				System.out.print(", ");
+	         }	
+	         System.out.print(anArray[i]);
+	      }		
+	   }	
+	 
 	// constructor 
 	public SeqMage (String species, String assembly, String inputFile) {
 		this.species = species;

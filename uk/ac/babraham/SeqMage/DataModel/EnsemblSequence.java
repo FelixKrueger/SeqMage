@@ -25,4 +25,5 @@ public class EnsemblSequence{
 	public String getId() {
 		return id;
 	}
+
 }

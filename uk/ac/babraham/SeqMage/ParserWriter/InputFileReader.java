@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import uk.ac.babraham.SeqMage.DataModel.GenomicCoords;
+
 // import uk.ac.babraham.DataModel;
 
 public class InputFileReader{
@@ -19,13 +21,17 @@ public class InputFileReader{
 
 	private String fileName;
 	
+	private ArrayList<GenomicCoords> queryStrings = new ArrayList<>();
+	
 	// constructor
 	public InputFileReader(String fileName) {
 		this.fileName = fileName;	
 	}	
 
+	
+	
 	// Reading in the input file
-	public void readFile() {
+	public GenomicCoords[] readFile() {
 		BufferedReader br = null;
 		FileReader fr = null;
 
@@ -34,42 +40,52 @@ public class InputFileReader{
 			br = new BufferedReader(fr);
 
 			String sCurrentLine;
-
+			
+			// low-tech, non generic way of reading in and discarding the header line
+			// br.readLine();
+			
 			while( (sCurrentLine = br.readLine()) != null) {
-				// System.out.println("Full line:\t" + sCurrentLine);
+				// 	System.out.println("Full line:\t" + sCurrentLine);
 
-				// Now let's extract the chromosome value
-				String[] elements = sCurrentLine.split(delimiterValue);
-				String chromosome = elements[chrColValue];
-				String start = elements[startColValue];
-				String end = elements[endColValue];
-				String strand = elements[strandColValue];
+				try {
+					// Now let's extract the values we need
+					String[] elements = sCurrentLine.split(delimiterValue);
+					String chromosome = elements[chrColValue];
+					int start = Integer.parseInt(elements[startColValue]);
+					int end = Integer.parseInt(elements[endColValue]);
+					String strand = elements[strandColValue];
 
-				switch(strand){
-				case "+":case "1":
-					// System.out.println("Strand was '+' or '1' (actually it was: '" + strand + ")");
-					strand = "1";
-					break;
-				case "-":case "-1":
-					// System.out.println("Strand was '-' or '-1' (actually it was '" + strand + ")");
-					strand = "-1";
-					break;
+					//System.out.println("start: " + start);
+					//System.out.println("end: " +  end);				
+					switch(strand){
+					case "+":case "1":
+						// System.out.println("Strand was '+' or '1' (actually it was: '" + strand + ")");
+						strand = "1";
+						break;
+					case "-":case "-1":
+						// System.out.println("Strand was '-' or '-1' (actually it was '" + strand + ")");
+						strand = "-1";
+						break;
 
-				default: 
-					// System.out.println("Strand was not defined, using top strand as default");
-					strand = "1";
-					break;
+					default: 
+						// System.out.println("Strand was not defined, using top strand as default");
+						strand = "1";
+						break;
+					}
+
+					// System.out.println(">" + strand + "<");
+
+					/* This is a sample command for submitting a postBody in the EnsemblRest class:
+					 * String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }"
+					 */
+
+					GenomicCoords coord = new GenomicCoords(chromosome,start,end,strand);
+					// System.out.println(singleQuery);
+					queryStrings.add(coord);
+				} catch(Exception e){
+					System.out.println("Failed to extract genomic coordinates for line:\t" + sCurrentLine);
+					e.printStackTrace();
 				}
-				// System.out.println(">" + strand + "<");
-
-
-				/* This is a sample command for submitting a postBody in the EnsemblRest class:
-				 * String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }"
-				 */
-				
-				String singleQuery = toString(chromosome,start,end,strand);
-				System.out.println(singleQuery);
-
 			}
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -84,31 +100,11 @@ public class InputFileReader{
 				ex.printStackTrace();
 			}
 		}
+		
+		return (GenomicCoords[]) queryStrings.toArray(new GenomicCoords[queryStrings.size()]);
+	
 	}	
 	
-	private String toString(String chromosome, String start, String end, String strand) {
-		StringBuffer sb = new StringBuffer();
-
-		/* sb.append("Chromosome:\t" + chr ); techically, "... " + ...) is a StringBuffer in itself,
-		 * irrelevant for a few operations
-		 * but might make a difference for 100 million objects...
-		 * and is better written as:
-		 */
-		// String singleQuery = "\\\"" + chromosome + ":" + start + ".." + end + ":" + strand +  "\\\"";
-		
-		sb.append("\\\"");
-		sb.append(chromosome);
-		sb.append(":");
-		sb.append(start);
-		sb.append("..");
-		sb.append(end);
-		sb.append(":");
-		sb.append(strand);
-		sb.append("\\\"");
-		
-		return(sb.toString());
-		
-	}
 }
 
 
