@@ -60,14 +60,6 @@ public class SeqMage {
 		// queries is an array of GenomicCoords
 		queries = inputReader.readFile();
 		
-		// printArray(queries);
-		StringBuffer sb = new StringBuffer();
-		for (GenomicCoords gc: queries) {
-			sb.append(gc.toString() + ",");
-			//System.out.print(gc.toString() + ",");
-		}
-		System.out.println("Final Concatenated String:");
-		System.out.println(sb.toString());
 		//	for string in queries:
 		// System.out.println(queries);
 		System.out.println("Finished reading in SeqMonk report\n");
@@ -158,7 +150,7 @@ public class SeqMage {
 			// make new EnsemblRest Object
 			System.out.println("\nNow making a Rest Object");
 			EnsemblRest rest = new EnsemblRest();
-			String out = rest.doSomething();
+			String out = rest.doSomething(queries);
 			System.out.println("here is the Output, again\n" + out);
 			
 			System.out.println("Now converting JSON string to an object\n\n");

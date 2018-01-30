@@ -83,8 +83,9 @@ public class InputFileReader{
 					// System.out.println(singleQuery);
 					queryStrings.add(coord);
 				} catch(Exception e){
-					System.out.println("Failed to extract genomic coordinates for line:\t" + sCurrentLine);
-					e.printStackTrace();
+					// System.err.println("Failed to extract genomic coordinates for line:\t" + sCurrentLine);
+					// instead of printing a full stack stack error message, just printing the first message
+					System.err.println(e.getLocalizedMessage());
 				}
 			}
 		} catch(IOException e) {

@@ -2,6 +2,9 @@ package uk.ac.babraham.SeqMage.Ensembl;
 
 import java.net.URL;
 import java.net.URLConnection;
+
+import uk.ac.babraham.SeqMage.DataModel.GenomicCoords;
+
 import java.net.HttpURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -11,15 +14,18 @@ import java.io.Reader;
 import java.io.DataOutputStream;
 
 
-
 public class EnsemblRest{
-
-	public String doSomething () throws Exception {
+	
+	private GenomicCoords[] queries;
+	
+	public String doSomething (GenomicCoords[] coords) throws Exception {
 	
 		// TODO: Figure out what to pass as the genome information for Sring ext
 		String server = "http://rest.ensembl.org";
 		String ext = "/sequence/region/human";
 
+		this.queries = coords;
+		
 		URL url = new URL(server + ext);
 
 		URLConnection connection = url.openConnection();
@@ -27,7 +33,30 @@ public class EnsemblRest{
 
 		// TODO: find a way to create the postBody dynamically
 		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }";
-		String postBody = "{ \"regions\" : [ \"MT:1..10:1\"] }";
+		
+		System.out.println("BEEN GIVEN THE FOLLOWING:");
+		
+		// print Array(queries);
+		StringBuffer sb = new StringBuffer();
+		for (GenomicCoords gc: queries) {
+			sb.append(gc.toString() + ",");
+			System.out.print(gc.toString() + ",");
+		}
+		System.out.println("Final Concatenated String:");
+		
+		String newPostBody = sb.toString();
+		System.out.println(newPostBody);
+		System.out.println("Deleting the last character (a ','):");
+		newPostBody = newPostBody.substring(0,newPostBody.length() - 1);
+		System.out.println("Adding a few more things:");
+		newPostBody = "{ \\\"regions\\\" : [ " + newPostBody + "] }";
+		System.out.println(newPostBody + "\n");
+		
+	
+		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\"] }";
+		String postBody = newPostBody;
+		System.out.println("Submitting:\n" + postBody);
+		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }";
 		httpConnection.setRequestMethod("POST");
 		httpConnection.setRequestProperty("Content-Type", "application/json");
 		httpConnection.setRequestProperty("Accept", "application/json");
