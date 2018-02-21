@@ -42,21 +42,22 @@ public class EnsemblRest{
 			sb.append(gc.toString() + ",");
 			System.out.print(gc.toString() + ",");
 		}
-		System.out.println("Final Concatenated String:");
+		System.out.println("\nFinal Concatenated String:");
 		
 		String newPostBody = sb.toString();
 		System.out.println(newPostBody);
 		System.out.println("Deleting the last character (a ','):");
 		newPostBody = newPostBody.substring(0,newPostBody.length() - 1);
 		System.out.println("Adding a few more things:");
-		newPostBody = "{ \\\"regions\\\" : [ " + newPostBody + "] }";
+		newPostBody = "{ \"regions\" : [ " + newPostBody + "] }";
 		System.out.println(newPostBody + "\n");
 		
 	
-		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\"] }";
 		String postBody = newPostBody;
-		System.out.println("Submitting:\n" + postBody);
 		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\",\"X:1000000..1000200:1\", \"ABBA01004489.1:1..100\"] }";
+		// String postBody = "{ \"regions\" : [ \"MT:1..10:1\" ] }";
+		System.out.println("Submitting:\n" + postBody);
+		
 		httpConnection.setRequestMethod("POST");
 		httpConnection.setRequestProperty("Content-Type", "application/json");
 		httpConnection.setRequestProperty("Accept", "application/json");

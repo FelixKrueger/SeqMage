@@ -19,7 +19,7 @@ public class GenomicCoords {
 		 */
 		// String singleQuery = "\\\"" + chromosome + ":" + start + ".." + end + ":" + strand +  "\\\"";
 		
-		sb.append("\\\"");
+		sb.append("\"");
 		sb.append(chr);
 		sb.append(":");
 		sb.append(start);
@@ -27,7 +27,7 @@ public class GenomicCoords {
 		sb.append(end);
 		sb.append(":");
 		sb.append(strand);
-		sb.append("\\\"");
+		sb.append("\"");
 		
 		return(sb.toString());
 		

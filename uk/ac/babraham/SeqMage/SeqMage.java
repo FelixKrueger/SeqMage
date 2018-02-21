@@ -37,7 +37,8 @@ public class SeqMage {
 
 	private Species mySpecies;
 	private Assembly myAssembly;
-	private static final String fileName = "D:\\Eclipse\\SeqMage\\MT_test_report.txt";
+	//private static final String fileName = "D:\\Eclipse\\SeqMage\\MT_test_report.txt";
+	private static final String fileName = "D:\\Eclipse\\SeqMage\\test_report_100.txt";
 	
 	private static GenomicCoords[] queries;
 			
@@ -59,6 +60,8 @@ public class SeqMage {
 		
 		// queries is an array of GenomicCoords
 		queries = inputReader.readFile();
+		
+		// System.out.println("Chromosome: " + queries[0].getChromosome() + "\n");
 		
 		//	for string in queries:
 		// System.out.println(queries);
@@ -135,7 +138,7 @@ public class SeqMage {
 			
 			System.out.println("Creating instance of Assembly for the following organism: "+ mySpecies.name());
 			
-			// TODO: Need to verify that the assemblyprovided is a valid name
+			// TODO: Need to verify that the assembly provided is a valid name
 			
 			System.out.println("Proceeding with verified assembly:\t"+ myEnsembl.getAssembly());
 			
@@ -183,11 +186,13 @@ public class SeqMage {
 			Gson gson2 = new Gson();
 			
 			// As array
-			EnsemblSequence[] ensemblSequences = gson2.fromJson(testJson2,EnsemblSequence[].class);
-			System.out.println("Printing from an array of JSON objects");
+			// EnsemblSequence[] ensemblSequences = gson2.fromJson(testJson2,EnsemblSequence[].class);
+			EnsemblSequence[] ensemblSequences = gson2.fromJson(out,EnsemblSequence[].class);
+
+			System.out.println("Printing from an array of JSON objects which we retrieved from Ensembl");
 			System.out.println(ensemblSequences.length);
 			// sequence of third item in the list (index pos)
-			System.out.println(ensemblSequences[2].getSeq() + "\n");
+			System.out.println(ensemblSequences[2].getQuery() + "\n");
 			
 			// As an ArrayList. Both should work equally well, I'll leave it here for future reference
 			

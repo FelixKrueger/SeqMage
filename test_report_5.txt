@@ -1,0 +1,6 @@
+Probe	Chromosome	Start	End	Probe Strand	No value	Feature	ID	Description	Feature Strand	Type	Orientation	Distance	MAPK20	lane1_SmartSeq2_test_L001_R1_val_1_GRCm38_hisat2.bam
+Chr1:115508892-115509091	1	115508892	115509091		NaN	null					Not found	0	1.0	1.0
+Chr4:131625932-131626131	4	131625932	131626131		NaN	null					Not found	0	1.0	1.0
+Chr12:26396832-26397031	12	26396832	26397031		NaN	null					Not found	0	1.0	1.0
+Chr14:87855734-87855933	14	87855734	87855933		NaN	null					Not found	0	1.0	1.0
+Chr18:47448500-47448699	18	47448500	47448699		NaN	null					Not found	0	1.0	1.0
